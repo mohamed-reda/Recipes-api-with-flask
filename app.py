@@ -10,7 +10,8 @@ recipes = [
         'description': 'This is a lovely egg salad recipe.'
     },
     {
-        'id': 2, 'name': 'Tomato Pasta',
+        'id': 2,
+        'name': 'Tomato Pasta',
         'description': 'This is a lovely tomato pasta recipe.'
     }
 ]
@@ -35,6 +36,8 @@ def get_recipe(recipe_id):
         if one_recipe['id'] == recipe_id:
             recipe = one_recipe
             break
+    else:
+        recipe = None
 
     if recipe:
         return jsonify(recipe)
@@ -60,8 +63,27 @@ def create_recipe():
     return jsonify(recipe), HTTPStatus.CREATED
 
 
+@app.route('/morerecipes', methods=['POST'])
+def create_more_recipes():
+    data = request.get_json()
+    recipe = {}
+    for i in data:
+        name = i.get('name')
+        description = i.get('description')
+        recipe = {
+            'id': len(recipes) + 1,
+            'name': name,
+            'description': description
+        }
+        recipes.append(recipe)
+
+    return jsonify(data), HTTPStatus.CREATED
+
+
 @app.route('/recipes/<int:recipe_id>', methods=['PUT'])
+# The last recipe_id should have the same name of the next parameter
 def update_recipe(recipe_id):
+    
     recipe = next((recipe for recipe in recipes if recipe['id'] == recipe_id), None)
 
     if not recipe:

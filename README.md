@@ -139,3 +139,9 @@ user
 user.notes.count()
 
 ------------------------------------------------------------------------------
+http POST localhost:5000/recipes name="Cheese Pizza" description="This is 
+a lovely cheese pizza"
+
+curl -i -X POST localhost:5000/recipes -H "Content-Type: application/
+json" -d '{"name":"Cheese Pizza", "description":"This is a lovely cheese 
+pizza"}'
